@@ -3,6 +3,7 @@ package com.teamexp.learnflowapi.enrollment.controller;
 import com.teamexp.learnflowapi.enrollment.dto.EnrollmentRequest;
 import com.teamexp.learnflowapi.enrollment.dto.EnrollmentResponse;
 import com.teamexp.learnflowapi.enrollment.service.EnrollmentService;
+import com.teamexp.learnflowapi.global.response.BaseResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public ResponseEntity<EnrollmentResponse> create(@Valid @RequestBody EnrollmentRequest request) {
+    public ResponseEntity<BaseResponse<EnrollmentResponse>> create(@Valid @RequestBody EnrollmentRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(enrollmentService.createEnrollment(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse.ok(enrollmentService.createEnrollment(request)));
     }
 }
