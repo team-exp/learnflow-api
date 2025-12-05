@@ -1,9 +1,10 @@
 package com.teamexp.learnflowapi.enrollment.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -23,21 +24,19 @@ public class CompletedLesson {
     @Column(name = "lesson_id", nullable = false)
     private Long lessonId;
 
-//  TODO 협의 이후 수정 예정
-    @Column(name = "completed_at", columnDefinition = "DATETIME(0)", nullable = false)
-    private LocalDateTime completedAt;
+    @CreatedDate
+    @Column(name = "completed_at", columnDefinition = "TIMESTAMP", nullable = false)
+    private Instant completedAt;
 
     protected CompletedLesson() {}
 
-    private CompletedLesson(Long enrollmentId, Long lessonId, LocalDateTime completedAt) {
-//      TODO 확인 필요
+    private CompletedLesson(Long enrollmentId, Long lessonId) {
+//      TODO 예외 처리 협의 후 수정 예정
         if (enrollmentId == null || enrollmentId <= 0) throw new IllegalArgumentException("enrollmentId cannot be null or zero or negative");
         if (lessonId == null || lessonId <= 0) throw new IllegalArgumentException("lessonId cannot be null or zero or negative");
-        if (completedAt == null) throw new IllegalArgumentException("completedAt cannot be null");
 
         this.enrollmentId = enrollmentId;
         this.lessonId = lessonId;
-        this.completedAt = completedAt;
     }
 
     public Long getId() {
@@ -50,9 +49,5 @@ public class CompletedLesson {
 
     public Long getLessonId() {
         return lessonId;
-    }
-
-    public LocalDateTime getCompletedAt() {
-        return completedAt;
     }
 }
