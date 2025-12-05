@@ -20,4 +20,20 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<T> error(String code, String message) {
         return new BaseResponse<>(false, code, message, null);
     }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public T getData() {
+        return data;
+    }
 }
