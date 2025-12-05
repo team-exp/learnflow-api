@@ -43,13 +43,18 @@ public class Enrollment {
     protected Enrollment() {}
 
     private Enrollment(Long userId, Long lectureId) {
-//      TODO 비즈니스 검증 로직 추가 예정
+//      TODO 예외 처리 협의 후 수정 예정
+        if (userId == null || userId <= 0L) {throw new IllegalArgumentException("userId cannot be null or zero or negative");}
+        if (lectureId == null || lectureId <= 0L) {throw new IllegalArgumentException("lectureId cannot be null or zero or negative");}
+
+        // 생성자 자동 주입 항목
         this.userId = userId;
         this.lectureId = lectureId;
         this.status = EnrollmentStatus.IN_PROGRESS;
         this.progress = 0;
     }
 
+    // 팩토리 메서드
     public static Enrollment create(Long userId, Long lectureId) {
         return new Enrollment(userId, lectureId);
     }
