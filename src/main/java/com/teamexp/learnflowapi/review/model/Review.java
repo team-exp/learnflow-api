@@ -8,13 +8,15 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table
+@Table(name = "review", uniqueConstraints = {
+    @UniqueConstraint(name = "uk_review_user_lecture",columnNames = {"user_id","lecture_id"})
+})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +24,7 @@ public class Review {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "lecture_id", nullable = false)
     private Long lectureId;
@@ -42,13 +44,13 @@ public class Review {
 
     @CreatedDate
     @Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP", nullable = false)
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
-    private Review(Long userId, Long lectureId, String content, Integer rating) {
+    private Review(String userId, Long lectureId, String content, Integer rating) {
         validateRating(rating);
         this.userId = userId;
         this.lectureId = lectureId;
@@ -57,7 +59,7 @@ public class Review {
         this.status = ReviewStatus.POSTED;
     }
 
-    public static Review create(Long userId, Long lectureId, String content, Integer rating) {
+    public static Review create(String userId, Long lectureId, String content, Integer rating) {
         return new Review(userId, lectureId, content, rating);
     }
 

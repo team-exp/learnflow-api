@@ -35,7 +35,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewResponse createReview(Long userId, ReviewRequest request) {
+    public ReviewResponse createReview(String userId, ReviewRequest request) {
         // 1. 강의 존재 확인
         Lecture lecture  = lectureRepository.findById(request.lectureId())
             .orElseThrow(()-> new IllegalArgumentException("존재하지 않은 강의입니다."));

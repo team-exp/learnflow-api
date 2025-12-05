@@ -26,7 +26,7 @@ public class ReviewController {
         @AuthenticationPrincipal CustomUserPrincipal principal,
         @Valid @RequestBody ReviewRequest request
         ) {
-        Long userId = Long.parseLong(principal.getId());
+        String userId = principal.getId();
 
         ReviewResponse response = reviewService.createReview(userId, request);
         return BaseResponse.ok(response);

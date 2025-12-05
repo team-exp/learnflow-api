@@ -2,15 +2,15 @@ package com.teamexp.learnflowapi.review.dto;
 
 import com.teamexp.learnflowapi.review.model.Review;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record ReviewResponse(
     Long reviewId,
     Long lectureId,
-    Long userId,
+    String userId,
     Integer rating,
     String content,
-    LocalDateTime createdAt
+    Instant createdAt
 ) {
     public static ReviewResponse from(Review review) {
         return new ReviewResponse(
