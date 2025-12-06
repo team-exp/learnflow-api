@@ -1,6 +1,7 @@
 package com.teamexp.learnflowapi.review.controller;
 
 import com.teamexp.learnflowapi.global.response.BaseResponse;
+import com.teamexp.learnflowapi.review.dto.ReviewReplyRequest;
 import com.teamexp.learnflowapi.review.dto.ReviewRequest;
 import com.teamexp.learnflowapi.review.dto.ReviewResponse;
 import com.teamexp.learnflowapi.review.service.ReviewService;
@@ -39,7 +40,7 @@ public class ReviewController {
         @PathVariable Long lectureId,
         @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<ReviewResponse> response = reviewService.getReviewsByLecture(lectureId,pageable);
+        Page<ReviewResponse> response = reviewService.getReviewsByLecture(lectureId, pageable);
         return BaseResponse.ok(response);
     }
 
@@ -55,4 +56,26 @@ public class ReviewController {
         return BaseResponse.ok(response);
     }
 
+    // [new] 수강평 삭제
+    @DeleteMapping("/{reviewId}")
+    public BaseResponse<Void> deleteReview(
+        @AuthenticationPrincipal CustomUserPrincipal principal,
+        @PathVariable Long reviewId
+    ) {
+        String userId = principal.getId();
+        reviewService.deleteReview(userId, reviewId);
+        return BaseResponse.ok(null);
+    }
+
+    // [new] 강사 답글 등록
+    @PostMapping("/{reviewId}/reply")
+    public BaseResponse<Void> addReply(
+        @AuthenticationPrincipal CustomUserPrincipal principal,
+        @PathVariable Long reviewId,
+        @Valid @RequestBody ReviewReplyRequest request
+    ) {
+        String userId = principal.getId();
+        reviewService.addReply(userId, reviewId, request.replyContent());
+        return BaseResponse.ok(null);
+    }
 }
