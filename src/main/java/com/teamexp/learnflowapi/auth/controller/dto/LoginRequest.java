@@ -1,0 +1,14 @@
+package com.teamexp.learnflowapi.auth.controller.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
+public record LoginRequest(
+        @Email
+        @NotNull(message = "Email cannot be null")
+        String email,
+
+        @NotNull(message = "Password cannot be null")
+        String password
+) {
+}
